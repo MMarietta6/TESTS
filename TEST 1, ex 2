@@ -1,0 +1,28 @@
+1. What set of data is a database and on the basis of which are they classified? 
+
+A structured collection of data that a program can interact with. 
+This interaction involves reading, writing, and manipulating data, often through file operations or libraries that provide database connectivity.
+Classification: Text Files (.txt, .csv): Data is stored as human-readable text. SQLite. Client-Server DBMSs (e.g., MySQL, PostgreSQL): These involve a separate 
+server process that manages the database, and program acts as a client that connects to the server.   
+
+
+2. How build the connection between the physical and logical name of a file?
+
+The connection between a logical filename and its physical location is primarily 
+handled by the operating system through APIs such as fopen(). When a program uses fopen() with a logical filename, like 'myfile.txt', the operating system resolves 
+this name to the file's physical address on the disk, returning a file pointer (handle) for the program to use. File paths are employed to specify the logical 
+location of the file. To ensure the program successfully locates 'myfile.txt', it must be saved in the same directory as the program's executable. This enables 
+the program to utilize a relative path, searching for the file within its current working directory.
+
+
+3. What is file pointer (FILE* f) and how should it be used in file processing? 
+
+A file pointer is a variable that is used to refer to an opened file in a C program.
+The file pointer is actually a structure that stores the file data such as the file name, its location, mode, and the current position in the file. It is used in 
+almost all the file operations in C such as opening, closing, reading, writing, etc. A file pointer (FILE *f) is a variable that stores the memory address of a FILE structure,
+representing an open file. It's used as a handle to perform file operations. To use it:
+Open: fopen() to get the pointer, check for NULL errors.
+Read/Write: fscanf(), fprintf(), fread(), fwrite(), etc.
+Navigate: fseek(), rewind().
+Close: fclose() to release resources.
+Proper error checking after fopen() and closing files with fclose() are essential practices.
