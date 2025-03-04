@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_RECORDS 10
+#define MAX_ROMAN 20
+#define MAX_LINE 20
+
+typedef struct {
+
+    char jnr[2];
+    int numbers;
+    char roman[MAX_ROMAN];
+} Record;
+
+void readRecords(Record records[], int *count);
+void convertToRoman(Record records[], int count);
+void writeRecords(Record records[], int count);
+
+int main() {
+
+    Record records[MAX_RECORDS];
+    int recordCount = 0;
+
+    readRecords(records, &recordCount);
+    convertToRoman(records, recordCount);
+    writeRecords(records, recordCount);
+
+    return 0;
+}
+
+
+void readRecords(Record records[], int *count) {
+    FILE *file = fopen("POS.txt", "r");
+    if (file == NULL) {
+        printf("Error opening POS.txt\n");
+        exit(1);
+    }
+
+    char line[MAX_LINE];
+    while (*count < MAX_RECORDS && fgets(line, sizeof(line), file)) {
+        if (sscanf(line, "%2s %d", records[*count].jnr, &records[*count].numbers) == 2) {
+            if (records[*count].numbers > 0 && records[*count].numbers <= 3889) {
+                records[*count].jnr[2] = '\0';
+                (*count)++;
+            } else {
+                printf("Warning: Invalid number %d in POS.txt.\n", records[*count].numbers);
+            }
+        } else {
+            printf("Warning: Invalid line format in POS.txt.\n");
+        }
+    }
+    fclose(file);
+}
+
+
+void convertToRoman(Record records[], int count) {
+    int ints[] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+    char *nums[] = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+
+    int i;
+    for (i = 0; i < count; i++) {
+        int num = records[i].numbers;
+        char *roman = records[i].roman;
+        int j = 0;
+        roman[0] = '\0';
+
+        while (num > 0 && j < 13) {
+            if (num >= ints[j]) {
+                strcat(roman, nums[j]);
+                num -= ints[j];
+            } else {
+                j++;
+            }
+        }
+    }
+}
+
+
+void writeRecords(Record records[], int count) {
+    FILE *file = fopen("CON.txt", "w");
+    if (file == NULL) {
+        printf("Error creating CON.txt\n");
+        return;
+    }
+
+    int i;
+    for (i = 0; i < count; i++) {
+        fprintf(file, "%s %d %s\n", records[i].jnr, records[i].numbers, records[i].roman);
+        printf("%s %d %s\n", records[i].jnr, records[i].numbers, records[i].roman);
+    }
+
+    fclose(file);
+    printf("Roman numeral conversion complete: CON.txt\n");
+}
