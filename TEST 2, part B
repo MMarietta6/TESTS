@@ -1,0 +1,55 @@
+1. Array sorting algorithm: Bubble sort
+
+Bubble Sort orders an array from smallest to largest by repeatedly comparing and exchanging neighboring elements. 
+The algorithm moves through the array, checking each element against the one immediately following it, and swaps them 
+if they are misplaced. This procedure is repeated until the array is fully arranged, which, in the algorithm's basic form,
+requires a number of passes related to the quantity of elements in the array.
+
+Example code in c: 
+#include <stdio.h>
+#include <stdbool.h>
+
+int main() {
+    int my_array[] = {9, 4, 10, 2, 5};
+    int n = sizeof(my_array) / sizeof(my_array[0]);
+
+    for (int i = 0; i < n-1; i++) {
+        bool swapped = false;
+        for (int j = 0; j < n-i-1; j++) {
+            if (my_array[j] > my_array[j+1]) {
+                int temp = my_array[j];
+                my_array[j] = my_array[j+1];
+                my_array[j+1] = temp;
+                swapped = true;
+            }
+        }
+        if (!swapped) {
+            break;
+        }
+    }
+
+    printf("Sorted array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", my_array[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+
+2. Formatted input/outout
+
+
+
+
+
+
+
+
+
+
+
+
+
+
