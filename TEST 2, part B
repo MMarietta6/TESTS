@@ -40,8 +40,25 @@ int main() {
 
 2. Formatted input/outout
 
+Formatted input/output in C refers to the use of functions like printf and scanf. printf- output funtion and scanf-input function
 
+Example: 
+#include <stdio.h>
 
+int main() {
+    char name[50];
+    int age;
+
+    printf("Please enter your name: ");
+    scanf("%49s", name);
+
+    printf("Please enter your age: ");
+    scanf("%d", &age);
+
+    printf("Hello, %s! You are %d years old.\n", name, age);
+
+    return 0;
+}
 
 
 
