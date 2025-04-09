@@ -1,0 +1,6 @@
+In code 1 the structure of the code is better, having the prototypes first, then main function and 
+then after there are the functions. Code 2 has main in the very end which complicates readabilty.
+Code 1 also has avoided using printf and scanf in the main function, instead making a function in the end to complete it. 
+Code 1 maintains modularity by separating input handling into a distinct function, while Code 2 integrates it into main.
+Code 1 stores all K values into an array, and then writes that array to file. Code 2 immediatelly writes the K values 
+to file, without storing them in an array.
