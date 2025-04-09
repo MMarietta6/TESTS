@@ -1,0 +1,81 @@
+//Code written with AI
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+// Function to read real numbers from a file and push them onto a stack
+double* readFromFileAndStack(const char* filename, int* count) {
+    FILE* file = fopen(filename, "r");
+    if (!file) {
+        perror("Error opening file");
+        return NULL;
+    }
+
+    double* stack = NULL;
+    *count = 0;
+    double num;
+
+    // Read numbers from the file and dynamically allocate memory for the stack
+    while (fscanf(file, "%lf", &num) == 1) {
+        (*count)++;
+        stack = (double*)realloc(stack, (*count) * sizeof(double));
+        if (!stack) {
+            perror("Memory allocation failed");
+            fclose(file);
+            return NULL;
+        }
+        stack[(*count) - 1] = num;
+    }
+
+    fclose(file);
+    return stack;
+}
+
+// Function to calculate the array K and write it to a file
+void calculateAndWriteK(double* A, int N, double* B, int M, double X, const char* outputFilename) {
+    FILE* outputFile = fopen(outputFilename, "w");
+    if (!outputFile) {
+        perror("Error opening output file");
+        return;
+    }
+
+    int minSize = (N < M) ? N : M;
+    double K = 1.0;
+
+    fprintf(outputFile, "K[0] = 1.0\n"); // Output K0
+
+    for (int i = 1; i <= minSize; i++) {
+        K = K * A[i - 1] * X / (A[i - 1] * A[i - 1] + B[i - 1] * B[i - 1]); // Replaced pow with direct multiplication
+        fprintf(outputFile, "K[%d] = %lf\n", i, K);
+    }
+
+    fclose(outputFile);
+}
+
+int main() {
+    int N, M;
+    double* A = readFromFileAndStack("F1.txt", &N); // Read array A from F1.txt
+    double* B = readFromFileAndStack("F2.txt", &M); // Read array B from F2.txt
+
+    if (!A || !B) {
+        return 1; // Exit if file reading failed
+    }
+
+    double X;
+
+    printf("Enter the real number X: ");
+    if (scanf("%lf", &X) != 1) {
+        fprintf(stderr, "Invalid input for X\n");
+        free(A);
+        free(B);
+        return 1; // Exit if input for X was invalid
+    }
+
+    calculateAndWriteK(A, N, B, M, X, "F3.txt"); // Calculate K and write to F3.txt
+
+    free(A);
+    free(B);
+
+    return 0;
+}
